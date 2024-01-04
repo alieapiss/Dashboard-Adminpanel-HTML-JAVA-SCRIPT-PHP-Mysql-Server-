@@ -84,8 +84,8 @@ include('includes/navbar.php');
                 } 
               ?>
               <!-- hacemos los siguiente para mostrar los datos de la BD en la tabla -->
-              <?php 
-                $connection = mysqli_connect("localhost","root","","adminpanel");
+              <?php
+                $connection = mysqli_connect("localhost","root","","registercopia2");
                 // Verificar la conexión
                 if (!$connection) {
                   die("La conexión a la base de datos falló: " . mysqli_connect_error());
@@ -148,7 +148,7 @@ include('includes/navbar.php');
                                       <td class="min-width" ><!-- Acciones -->
                                           <!-- Editar -->
                                           <div class="action justify-content-end text-center">
-                                              <form action="register_edit.php" method="POST">
+                                              <form action="register_editcopy.php" method="POST">
                                                 <div class="action">
                                                   <input type="hidden" name="edit_id" value="<?php echo $username = mysqli_real_escape_string($connection, $row['id']); ?>">
                                                     <button class="text-secondary" name="edit_btn">
@@ -158,7 +158,7 @@ include('includes/navbar.php');
                                               </form>
                                               <!-- Eliminar -->
                                               <div class="action">
-                                                  <form action="code.php" method="POST">
+                                                  <form action="codecopy.php" method="POST">
                                                   <input type="hidden" name="delete_id" value="<?php echo $username = mysqli_real_escape_string($connection, $row['id']); ?>">
                                                     <button type="submit" name="deletebtn" class="text-danger">
                                                         <i class="lni lni-trash-can"></i>

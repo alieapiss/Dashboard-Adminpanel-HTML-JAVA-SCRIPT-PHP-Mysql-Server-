@@ -24,11 +24,11 @@
                     d="M17.0833 10C17.7737 10 18.3432 9.43708 18.2408 8.75433C17.7005 5.14918 14.8508 2.29947 11.2457 1.75912C10.5629 1.6568 10 2.2263 10 2.91665V9.16666C10 9.62691 10.3731 10 10.8333 10H17.0833Z" />
                 </svg>
               </span>
-              <span class="text">Dashboard</span>
+              <span href="index.php" class="text"> Dashboard </span>
             </a>
             <ul id="ddmenu_1" class="collapse show dropdown-nav">
               <li>
-                <a href="index.html" class="active"> eCommerce </a>
+                <a href="index copy.html" class="active"> eCommerce </a>
               </li>
             </ul>
           </li>
@@ -51,6 +51,12 @@
             <ul id="ddmenu_2" class="collapse dropdown-nav">
               <li>
                 <a href="register.php"> Registros </a>
+              </li>
+              <li>
+                <a href="register_add.php"> Agregar Registros </a>
+              </li>
+              <li>
+                <a href="register_edit.php"> Editar Registros </a>
               </li>
               <li>
                 <a href="blank-page.html"> Otros </a>
@@ -420,7 +426,14 @@
                           <img src="assets/images/profile/profile-image.png" alt="" />
                         </div>
                         <div>
-                          <h6 class="fw-500">Adam Joe</h6>
+                        <h6 class="fw-500">
+                            <!-- Adam Joe -->
+                            <?php
+                                // Validar y sanitizar la variable de sesión antes de imprimir
+                                $status = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : '';
+                                echo $status;
+                            ?>
+                        </h6>
                           <p>Admin</p>
                         </div>
                       </div>
@@ -457,7 +470,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                      <a href="#0"> <i class="lni lni-exit"></i> Sign Out </a>
+                      <a href="#" data-toggle="modal" data-target="#logoutModal"> <i class="lni lni-exit"></i> Sign Out </a>
                     </li>
                   </ul>
                 </div>
@@ -468,6 +481,28 @@
         </div>
       </header>
       <!-- ========== header end ========== -->
+      <!-- Modal Cerrar Sesión-->
+      <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">¿Cerrar Sesión?</h5>
+                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual. </div>
+                  <div class="modal-footer">
+                      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+
+                      <!-- Tu formulario de logout -->
+                      <form action="logout.php" method="POST"> 
+                          <button type="submit" name="logoutbtn" class="btn btn-primary">Cerrar Sesión</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
 
       <!-- ========== section start ========== -->
       <section class="section">

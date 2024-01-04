@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-01-2024 a las 21:55:51
+-- Tiempo de generación: 04-01-2024 a las 21:36:50
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -30,16 +30,24 @@ SET time_zone = "+00:00";
 CREATE TABLE `register` (
   `id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password` varchar(20) NOT NULL
+  `phone` int(11) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `image` varchar(200) NOT NULL,
+  `pdf_file` varchar(255) NOT NULL,
+  `usertype` varchar(20) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `register`
 --
 
-INSERT INTO `register` (`id`, `username`, `email`, `password`) VALUES
-(1, 'ali', 'alieapiss@gmail.com', '123456');
+INSERT INTO `register` (`id`, `username`, `lastname`, `email`, `phone`, `password`, `address`, `city`, `image`, `pdf_file`, `usertype`, `date`) VALUES
+(9, 'ali', 'serrano perez ', 'ali@gmail.com', 941194553, '12345', 'av. Abancay', 'Abancay', 'eli.jpg', 'Curriculum Vitae ali.pdf', 'admin', '2024-01-04 20:24:09');
 
 --
 -- Índices para tablas volcadas
@@ -59,7 +67,7 @@ ALTER TABLE `register`
 -- AUTO_INCREMENT de la tabla `register`
 --
 ALTER TABLE `register`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

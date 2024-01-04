@@ -1,8 +1,7 @@
 <?php
-
     include('security.php');
 
-    $connection = mysqli_connect("localhost","root","","adminpanel");
+    $connection = mysqli_connect("localhost", "root", "", "registercopia2");
 
     if (!$connection) {
         die("La conexión a la base de datos falló: " . mysqli_connect_error());
@@ -12,8 +11,8 @@
     /* ============== Establecer la zona horaria con la siguiente función: ========= */
     date_default_timezone_set('America/Lima');
 
-    /* =========== Registro de Usuarios ============ */
-    if(isset($_POST['registerbtn']))
+    /* =================Register Copia================= */
+    if (isset($_POST['registercopybtn'])) 
     {
         $username = $_POST['username'];
         $lastname = $_POST['lastname'];
@@ -40,7 +39,7 @@
                 $storeImage = $_FILES["perfil_image"]['name'];
                 $storePdf = $_FILES["pdf_file"]['name'];
                 $_SESSION['status'] = "La imagen o el archivo PDF ya existe. Imagen: $storeImage, PDF: $storePdf";
-                header('Location: register.php');
+                header('Location: registercopy.php');
                 exit();
             }
             else
@@ -59,13 +58,13 @@
                     move_uploaded_file($_FILES["pdf_file"]['tmp_name'], "pdfFile/" . $pdfFile);
 
                     $_SESSION['success'] = "Imagen y archivo PDF agregados correctamente";
-                    header('Location: register.php');
+                    header('Location: registercopy.php');
                     exit();
                 } 
                 else 
                 {
                     $_SESSION['status'] = "No se pudo agregar la imagen y el archivo PDF";
-                    header('Location: register.php');
+                    header('Location: registercopy.php');
                     exit();
                 }
             }
@@ -73,14 +72,46 @@
         else 
         {
             $_SESSION['status'] = "Las contraseñas no coinciden";
-            header('Location: register.php');
+            header('Location: registercopy.php');
             exit();
         }
+    }
 
+
+
+    if (isset($_POST['edit_btn'])) {
+        $id = mysqli_real_escape_string($connection, $_POST['edit_id']);
+        $query = "SELECT * FROM register WHERE id = ?";
+        $stmt = mysqli_prepare($connection, $query);
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        $query_run = mysqli_stmt_execute($stmt);
+        exit();
+        // Aquí puedes procesar los resultados de la consulta para la acción de edición
+    }
+
+    /* Eliminar Registros */
+
+    if(isset($_POST['deletebtn']))
+    {
+        $id = $_POST['delete_id'];
+
+        $query = "DELETE FROM register WHERE id=$id";
+        $query_run = mysqli_query($connection, $query);
+
+        if($query_run)
+        {
+            $_SESSION['success'] = "Datos  eliminados correctamente";
+            header('Location: registercopy.php');
+        }
+        else
+        {
+            $_SESSION['status'] = "Datos no eliminados";
+            header('Location: registercopy.php');
+        }
     }
 
     /* Actualizar Registro */
-    if(isset($_POST['updatebtn']))
+    if (isset($_POST['updatebtn'])) 
     {
         // Obtener los datos del formulario
         $id = $_POST['edit_id'];
@@ -154,69 +185,16 @@
         {
             // Mensaje de éxito y redireccionamiento
             $_SESSION['success'] = "Datos actualizados correctamente";
-            header('Location: register.php');
+            header('Location: registercopy.php');
             exit();
         } 
         else 
         {
             // Mensaje de error y redireccionamiento
             $_SESSION['status'] = "Datos no actualizados";
-            header('Location: register.php');
+            header('Location: registercopy.php');
             exit();
         }
-    }
-
-    /* Eliminar Registros */
-
-    if(isset($_POST['deletebtn']))
-    {
-        $id = $_POST['delete_id'];
-
-        $query = "DELETE FROM register WHERE id=$id";
-        $query_run = mysqli_query($connection, $query);
-
-        if($query_run)
-        {
-            $_SESSION['success'] = "Datos  eliminados correctamente";
-            header('Location: register.php');
-        }
-        else
-        {
-            $_SESSION['status'] = "Datos no eliminados";
-            header('Location: register.php');
-        }
-    }
-    
-    /* Login o Iniciar Sesión*/
-
-    if (isset($_POST['loginbtn'])) 
-    {
-        // Evitar inyección SQL y asegurar datos antes de usarlos en la consulta
-        $email_login = mysqli_real_escape_string($connection, $_POST['email']);
-        $password_login = mysqli_real_escape_string($connection, $_POST['password']);
-    
-        // Consulta preparada para evitar inyección SQL
-        $query = "SELECT * FROM register WHERE email=? AND password=? LIMIT 1";
-        $stmt = mysqli_prepare($connection, $query);
-        mysqli_stmt_bind_param($stmt, "ss", $email_login, $password_login);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_store_result($stmt);
-    
-        if (mysqli_stmt_num_rows($stmt) == 1) 
-        {
-            $_SESSION['username'] = $email_login;
-            header('Location: index.php');
-            exit(); // Asegura que el script se detenga después de la redirección
-        } 
-        else 
-        {
-            $_SESSION['status'] = 'Su correo electrónico y su contraseña no coinciden. Inténtelo de nuevo.';
-            header('Location: login.php');
-            exit(); // Asegura que el script se detenga después de la redirección
-        }
-    
-        // Cierra la consulta preparada
-        mysqli_stmt_close($stmt);
     }
 
 ?>
